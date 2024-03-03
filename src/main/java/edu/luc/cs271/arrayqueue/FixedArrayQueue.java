@@ -24,41 +24,64 @@ public class FixedArrayQueue<E> implements SimpleQueue<E> {
     this.capacity = capacity;
     this.data = (E[]) new Object[capacity];
     this.size = 0;
-    this.front = 0;
-    this.rear = capacity - 1;
+    this.front = -1;
+    this.rear = -1;
+    
+    // this.front = 0;
+    // this.rear = capacity - 1;
   }
 
   @Override
   public boolean offer(final E obj) {
     // TODO
-
-    return false;
+    rear = rear++;
+    size = size++;
+    if (rear==capacity-1) {rear = 0;}
+    if (front==-1) {front = 0;}
+    data[rear] = obj;
+    return true;
   }
+
+//   Increment rear by 1.
+// If rear is equal to n, set rear to 0.
+// If front is -1, set front to 0.
+// Set queue[rear] to x.
 
   @Override
   public E peek() {
     // TODO
-
-    return null;
+    return data[front];
   }
 
   @Override
   public E poll() {
-    // TODO
-
-    return null;
+    E x = data[front];
+    if (front==rear) {
+      front = -1;
+      rear = -1;
+    }
+    else{
+      front++;
+      if (front == capacity-1) {front = 0;}
+    }
+    size--;
+    return x;
   }
+
+//  Set x to queue[front].
+//  If front is equal to rear, set front and rear to -1.
+// Otherwise, increment front by 1 and if front is equal to n, set front to 0.
+// Return x.
+
 
   @Override
   public boolean isEmpty() {
-    // TODO
-    return true;
+    return size==0;
   }
 
   @Override
   public boolean isFull() {
-    // TODO
-    return false;
+    return size==capacity-1;
   }
 
   @Override
@@ -74,7 +97,7 @@ public class FixedArrayQueue<E> implements SimpleQueue<E> {
   @Override
   public List<E> asList() {
     // TODO implement using an ArrayList preallocated with the right size
-    final ArrayList<E> result = null;
+    final ArrayList<E> result = new ArrayList<E>(capacity);
     
     return result;
   }
