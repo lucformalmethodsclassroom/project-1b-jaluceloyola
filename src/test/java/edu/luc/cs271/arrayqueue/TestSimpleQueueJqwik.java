@@ -8,7 +8,6 @@ import net.jqwik.api.*;
 import net.jqwik.api.constraints.*;
 import net.jqwik.api.state.*;
 
-
 class TestSimpleQueueJqwik {
 
   class OfferAction implements Action.Independent<SimpleQueue<String>> {
