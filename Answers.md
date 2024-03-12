@@ -1,5 +1,5 @@
 Why does FixedArrayQueue require an explicit constructor?  
-Since we have a boolean checking to see if the constructor is positive, FixedArrayQueue requires an explicit constructor.  
+-Since we have a boolean checking to see if the constructor is positive, FixedArrayQueue requires an explicit constructor.  
 
 What happens when you offer an item to a full FixedArrayQueue?
 The item is not added, and the offer() method returns false.
