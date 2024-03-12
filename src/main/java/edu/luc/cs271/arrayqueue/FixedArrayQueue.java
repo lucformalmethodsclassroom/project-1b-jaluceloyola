@@ -2,6 +2,7 @@ package edu.luc.cs271.arrayqueue;
 
 import java.util.ArrayList;
 import java.util.List;
+import static java.lang.System.out;
 
 public class FixedArrayQueue<E> implements SimpleQueue<E> {
 
@@ -20,7 +21,10 @@ public class FixedArrayQueue<E> implements SimpleQueue<E> {
   @SuppressWarnings("unchecked")
   public FixedArrayQueue(final int capacity) {
     // TODO check argument validity
-
+    if (capacity <= 0)
+    {
+      throw new java.lang.IllegalArgumentException("Capacity must be 0 or greater");
+    }
     this.capacity = capacity;
     this.data = (E[]) new Object[capacity];
     this.size = 0;
@@ -33,13 +37,20 @@ public class FixedArrayQueue<E> implements SimpleQueue<E> {
 
   @Override
   public boolean offer(final E obj) {
+    if (size==capacity) {return false;}
+    else {
     // TODO
-    rear = rear++;
-    size = size++;
-    if (rear==capacity-1) {rear = 0;}
+    //System.out.println(front);
+    //System.out.println(rear);
+    rear = rear+1;
+    size = size+1;
+    if (rear==capacity) {rear = 0;}
     if (front==-1) {front = 0;}
     data[rear] = obj;
+    //System.out.println(front);
+    //System.out.println(rear);
     return true;
+    }
   }
 
 //   Increment rear by 1.
@@ -61,10 +72,10 @@ public class FixedArrayQueue<E> implements SimpleQueue<E> {
       rear = -1;
     }
     else{
-      front++;
-      if (front == capacity-1) {front = 0;}
+      front = front+1;
+      if (front == capacity) {front = 0;}
     }
-    size--;
+    size = size-1;
     return x;
   }
 
@@ -81,7 +92,7 @@ public class FixedArrayQueue<E> implements SimpleQueue<E> {
 
   @Override
   public boolean isFull() {
-    return size==capacity-1;
+    return size==capacity;
   }
 
   @Override
@@ -98,7 +109,13 @@ public class FixedArrayQueue<E> implements SimpleQueue<E> {
   public List<E> asList() {
     // TODO implement using an ArrayList preallocated with the right size
     final ArrayList<E> result = new ArrayList<E>(capacity);
-    
+    E temp;
+    for (int i = 0; i < this.size; i++) {
+      temp = this.poll();
+      result.add(temp);
+      this.offer(temp);
+    }
+
     return result;
   }
 }
