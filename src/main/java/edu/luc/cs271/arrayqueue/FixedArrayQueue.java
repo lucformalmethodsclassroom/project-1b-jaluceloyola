@@ -24,11 +24,11 @@ public class FixedArrayQueue<E> implements SimpleQueue<E> {
     this.capacity = capacity;
     this.data = (E[]) new Object[capacity];
     this.size = 0;
-    this.front = -1;
-    this.rear = -1;
+    // this.front = -1;
+    // this.rear = -1;
     
-    // this.front = 0;
-    // this.rear = capacity - 1;
+    this.front = 0;
+    this.rear = capacity - 1;
   }
 
   @Override
