@@ -1,6 +1,7 @@
 package edu.luc.cs271.arrayqueue;
 
 import java.util.Scanner;
+import static java.lang.System.out;
 
 public class SingleQueueService {
 
@@ -11,7 +12,6 @@ public class SingleQueueService {
   public static void main(final String[] args) throws InterruptedException {
     // queue for customer names
     final SimpleQueue<String> queue = new FixedArrayQueue<>(5);
-
     // lock object for thread safety
     final var lock = new Object();
 
@@ -22,8 +22,14 @@ public class SingleQueueService {
           String current;
           int remaining;
           synchronized (lock) {
+            if (queue.size() > 0){
+            current = queue.poll();
+            remaining = queue.size();
+            }
+            else{
             current = null; // TODO try to take next name from queue
             remaining = 0; // TODO determine resulting size of queue
+            }
           }
           if (current == null) {
             System.out.println("no one waiting");
@@ -48,6 +54,7 @@ public class SingleQueueService {
       var result = false;
       synchronized (lock) {
         // TODO try to add this name to the queue
+        result = queue.offer(name);
       }
       if (result) {
         System.out.println(name + " has joined the queue");

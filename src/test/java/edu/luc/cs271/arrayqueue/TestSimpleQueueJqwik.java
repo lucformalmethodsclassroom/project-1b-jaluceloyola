@@ -8,14 +8,13 @@ import net.jqwik.api.*;
 import net.jqwik.api.constraints.*;
 import net.jqwik.api.state.*;
 
-
 class TestSimpleQueueJqwik {
 
   class OfferAction implements Action.Independent<SimpleQueue<String>> {
     @Override
     public boolean precondition(final SimpleQueue<String> queue) {
       // TODO implement precondition for offer method
-      return true;
+      return !queue.isFull();
     }
     @Override
     public Arbitrary<Transformer<SimpleQueue<String>>> transformer() {
@@ -24,7 +23,12 @@ class TestSimpleQueueJqwik {
         String.format("offer(%s)", element),
         queue -> {
           // TODO capture state before offer, perform, and check postcondition
-
+          final var sizeBefore = queue.size();
+          final var accepted = queue.offer(element);
+          assertTrue(accepted);
+          assertFalse(queue.isEmpty());
+          assertEquals(sizeBefore + 1, queue.size());
+          assertTrue(element.equals(queue.peek()));
         }
       ));
     }
@@ -35,7 +39,12 @@ class TestSimpleQueueJqwik {
       .describeAs("poll")
       .justMutate(queue -> {
         // TODO capture state before poll, perform, and check postcondition
-
+        final var sizeBefore = queue.size();
+        final var copy_front = queue.peek(); 
+        final var take_front = queue.poll();
+        assertEquals(copy_front,take_front);
+        if(sizeBefore > 0){assertEquals(sizeBefore - 1, queue.size());}
+        assertFalse(queue.isFull());
       });
   }
 
